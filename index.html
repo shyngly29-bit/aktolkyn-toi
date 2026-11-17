@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#fbf6ec">
+<title>Ақтолқын — қыз ұзату</title>
+<link rel="preload" as="image" href="01-girl-with-dove.png" fetchpriority="high">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--ivory:#fbf6ec;--ivory2:#f4ead8;--champ:#ead7b3;--gold:#b98a3e;--gold-d:#8a6326;--ink:#4a3620;--muted:#7b6650}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--ivory);color:var(--ink);font-family:'Montserrat',sans-serif;-webkit-text-size-adjust:100%}
+  body{overflow-x:hidden}
+  .app{max-width:430px;margin:0 auto;position:relative;background:var(--ivory)}
+  .foil{background:linear-gradient(100deg,#8a6326 0%,#c99b4f 28%,#fff1c9 44%,#d4a95c 58%,#8a6326 100%);background-size:260% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:foil 5s linear infinite}
+  @keyframes foil{from{background-position:100% 0}to{background-position:-160% 0}}
+
+  /* ---------- story ---------- */
+  .story{position:relative;height:850vh}
+  .sticky{position:sticky;top:0;height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--ivory)}
+  .frame{position:relative;width:min(100%, calc(100vh * 300 / 639));aspect-ratio:300/639;overflow:hidden;background:var(--ivory2)}
+  @supports (height:100dvh){.frame{width:min(100%, calc(100dvh * 300 / 639))}}
+  .frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;visibility:hidden;will-change:transform,opacity;user-select:none;-webkit-user-drag:none}
+  .frame img:first-child{opacity:1;visibility:visible}
+  .haze{position:absolute;inset:0;background:var(--ivory);opacity:0;pointer-events:none;z-index:20}
+
+  .txt{position:absolute;left:0;right:0;z-index:30;text-align:center;opacity:0;visibility:hidden;pointer-events:none;padding:0 20px}
+  .txt.bottom{bottom:0;padding-top:64px;padding-bottom:calc(20px + env(safe-area-inset-bottom));
+    background:linear-gradient(to top,rgba(251,246,236,.96) 0%,rgba(251,246,236,.85) 58%,rgba(251,246,236,0) 100%)}
+  .k{font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold-d);font-weight:600}
+  .txt h1{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:54px;line-height:1;margin:6px 0 2px}
+  .poem{font-family:'Cormorant Garamond',serif;font-size:20.5px;line-height:1.32;font-weight:500;font-style:italic;margin:0}
+  .poem .l{display:block;opacity:0;transform:translateY(8px)}
+  .orn{display:block;width:110px;height:12px;margin:8px auto 2px}
+  .hint{font-size:12px;letter-spacing:.05em;color:var(--muted);margin-top:10px}
+  .hint span{display:inline-block;animation:bob 1.6s ease-in-out infinite}
+  @keyframes bob{50%{transform:translateY(5px)}}
+  #t5{top:13%;left:33%;right:3%}
+  #t5 .d{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:64px;line-height:.9;margin-top:8px;color:var(--gold-d);text-shadow:0 0 18px #fffaf0,0 0 4px #fffaf0}
+  #t5 .m{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:28px;color:var(--ink);text-shadow:0 0 16px #fffaf0}
+  #t5 .w{font-family:'Cormorant Garamond',serif;font-size:21px;color:var(--gold-d);margin-top:6px;text-shadow:0 0 14px #fffaf0}
+  .venue{font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:700;margin:6px 0 2px}
+  .addr{font-family:'Cormorant Garamond',serif;font-size:20px}
+
+  /* ---------- invitation ---------- */
+  .after{position:relative;padding:44px 18px calc(48px + env(safe-area-inset-bottom));text-align:center;background:linear-gradient(var(--ivory),#f6ecd9 40%,var(--ivory2));overflow:hidden}
+  #fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+  .after>*:not(canvas){position:relative;z-index:1}
+  .after h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:30px;margin:6px 0 0}
+
+  .envw{transition:opacity .7s ease,transform .7s ease,max-height .8s ease .3s;max-height:420px}
+  .envw.gone{opacity:0;transform:translateY(30px) scale(.95);max-height:0;pointer-events:none}
+  .env{position:relative;width:300px;max-width:84vw;aspect-ratio:3/2;margin:28px auto 0;perspective:900px}
+  .env-back{position:absolute;inset:0;background:#efe1c4;border-radius:10px;box-shadow:0 22px 44px rgba(120,90,40,.28)}
+  .peek{position:absolute;left:7%;right:7%;top:7%;height:86%;background:#fffdf7;border:1px solid var(--champ);border-radius:6px;z-index:1;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;transition:transform 1.1s cubic-bezier(.2,.8,.2,1) .55s}
+  .peek b{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700}
+  .env.open .peek{transform:translateY(-58%)}
+  .env-front{position:absolute;inset:0;z-index:2;border-radius:10px;background:linear-gradient(160deg,#f8eedb,#efdfbf);clip-path:polygon(0 0,50% 56%,100% 0,100% 100%,0 100%)}
+  .env-lines{position:absolute;inset:0;z-index:2;pointer-events:none}
+  .flap{position:absolute;left:0;right:0;top:0;height:60%;z-index:3;background:linear-gradient(#f3e6cb,#e8d3aa);clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:50% 0;transition:transform .75s cubic-bezier(.4,.1,.3,1),z-index 0s .38s}
+  .env.open .flap{transform:rotateX(180deg);z-index:0}
+  .seal{position:absolute;left:50%;top:60%;z-index:4;width:66px;height:66px;margin:-33px 0 0 -33px;border:0;border-radius:50%;cursor:pointer;
+    background:radial-gradient(circle at 35% 30%,#d2475e,#9b1530 55%,#6e0b20);box-shadow:0 4px 12px rgba(110,11,32,.45),inset 0 -3px 6px rgba(0,0,0,.25);
+    color:#f6dca4;font:700 30px 'Cormorant Garamond',serif;transition:transform .45s cubic-bezier(.5,-.4,.6,1.4),opacity .4s;animation:pulse 2.2s ease-in-out infinite}
+  .seal::after{content:'';position:absolute;inset:6px;border-radius:50%;border:1px dashed rgba(246,220,164,.6)}
+  @keyframes pulse{50%{box-shadow:0 4px 12px rgba(110,11,32,.45),0 0 0 10px rgba(185,138,62,.12),inset 0 -3px 6px rgba(0,0,0,.25)}}
+  .env.open .seal{transform:scale(0) rotate(40deg);opacity:0;animation:none}
+  .tap{margin-top:18px;font-size:12px;color:var(--muted);letter-spacing:.05em}
+
+  .invite{display:none;margin:22px auto 0;max-width:380px;padding:34px 22px 30px;background:#fffdf8;border-radius:6px;position:relative;
+    box-shadow:0 24px 60px rgba(120,90,40,.25);outline:1px solid var(--gold);outline-offset:-10px;opacity:0;transform:scale(.9) translateY(20px);transition:opacity .9s ease,transform 1s cubic-bezier(.2,.8,.2,1)}
+  .invite::before{content:'';position:absolute;inset:14px;border:1px solid rgba(185,138,62,.35);pointer-events:none}
+  .invite.on{display:block}
+  .invite.show{opacity:1;transform:none}
+  .corner{position:absolute;width:46px;height:46px}
+  .corner.tl{top:6px;left:6px}.corner.tr{top:6px;right:6px;transform:scaleX(-1)}.corner.bl{bottom:6px;left:6px;transform:scaleY(-1)}.corner.br{bottom:6px;right:6px;transform:scale(-1)}
+  .r{opacity:0;transform:translateY(14px);transition:opacity .8s ease calc(var(--i)*.14s + .3s),transform .8s ease calc(var(--i)*.14s + .3s)}
+  .invite.show .r{opacity:1;transform:none}
+  .invite .nm{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:58px;line-height:1;margin:8px 0 0}
+  .invite .prose{font-family:'Cormorant Garamond',serif;font-size:19.5px;line-height:1.38;margin:12px 0}
+  .invite .prose b{color:var(--gold-d)}
+  .dateblk{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;margin:18px 0 6px}
+  .dateblk .side{border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);padding:7px 0;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-d);font-weight:600}
+  .dateblk .day{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:64px;line-height:.9}
+  .dateblk .mon{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600}
+  .yr{font-family:'Cormorant Garamond',serif;font-size:19px;letter-spacing:.3em;color:var(--gold-d)}
+  .place{margin:16px 0 4px}
+  .place .venue{font-size:26px}
+  .cd{display:flex;justify-content:center;gap:7px;margin:18px 0 4px}
+  .cd div{min-width:62px;padding:9px 3px;border-radius:12px;background:#fff8ea;border:1px solid var(--champ)}
+  .cd b{display:block;font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold-d);line-height:1}
+  .cd i{font-style:normal;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .invite .poem{font-size:19.5px;margin:16px 0 0}
+  .invite .poem .l{opacity:1;transform:none}
+  .btn[hidden]{display:none}
+  .hosts{font-family:'Cormorant Garamond',serif;font-size:19px;margin-top:16px}
+  .hosts b{display:block;font-size:23px;color:var(--gold-d);font-style:italic}
+  .btns{display:flex;gap:8px;margin-top:18px}
+  .btn{flex:1;display:block;padding:12px 8px;border-radius:999px;border:1px solid var(--gold);background:transparent;color:var(--gold-d);font:600 12.5px 'Montserrat',sans-serif;text-decoration:none;cursor:pointer}
+
+  /* RSVP */
+  .rsvp{margin:34px auto 0;max-width:380px;text-align:left;padding:24px 20px;background:rgba(255,253,248,.85);border:1px solid var(--champ);border-radius:18px}
+  .rsvp .k,.rsvp h4{text-align:center}
+  .rsvp h4{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;margin:4px 0 0}
+  label.f{display:block;font-size:12px;color:var(--muted);margin:16px 0 6px}
+  input[type=text],input[type=number]{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--champ);background:#fff;font:16px 'Montserrat',sans-serif;color:var(--ink)}
+  input:focus{outline:2px solid var(--gold);outline-offset:1px}
+  .seg{display:flex;gap:8px}
+  .seg label{flex:1;position:relative}
+  .seg input{position:absolute;opacity:0}
+  .seg span{display:block;text-align:center;padding:12px 6px;border-radius:12px;border:1px solid var(--champ);background:#fff;font-size:14px}
+  .seg input:checked+span{background:var(--gold);border-color:var(--gold);color:#fff;font-weight:600}
+  .seg input:focus-visible+span{outline:2px solid var(--gold-d)}
+  .submit{width:100%;margin-top:22px;padding:15px;border:0;border-radius:999px;background:linear-gradient(135deg,#d8b46e,#b98a3e);color:#fff;font:600 14px 'Montserrat',sans-serif;letter-spacing:.06em;cursor:pointer}
+  .demo{margin-top:10px;font-size:11.5px;color:var(--muted);text-align:center}
+  .msg{margin-top:14px;padding:12px 14px;border-radius:12px;background:#fff;border:1px solid var(--champ);font-size:13px;line-height:1.5;display:none}
+  #music{position:fixed;top:calc(env(safe-area-inset-top) + 10px);right:max(10px, calc(50% - 205px));z-index:60;width:40px;height:40px;border-radius:50%;border:1px solid var(--gold);background:rgba(251,246,236,.85);color:var(--gold-d);font-size:17px;display:none}
+
+  @media (prefers-reduced-motion: reduce){
+    .foil,.seal,.hint span{animation:none}
+    .frame img,.txt{transition:opacity .35s linear}
+    .r,.invite,.peek,.flap,.envw{transition-duration:.01s!important;transition-delay:0s!important}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <button id="music" aria-label="Музыка">♪</button>
+
+  <section class="story" id="story">
+    <div class="sticky">
+      <div class="frame" id="frame">
+        <img src="01-girl-with-dove.png" alt="Қыз қолында ақ көгершін ұстап отыр" fetchpriority="high">
+        <img src="02-dove-takeoff.png" alt="Ақ көгершін ұшып барады">
+        <img src="03-flower-garden.png" alt="Гүлді бақ жолы">
+        <img src="04-ornamental-arch.png" alt="Ою-өрнекті арка">
+        <img src="05-clouds-and-silk.png" alt="Бұлттар мен жібек таспалар">
+        <img src="06-celebration-venue.png" alt="Той өтетін орын">
+        <img src="07-dove-arrival.png" alt="Көгершін қоршауға қонды">
+        <div class="haze" id="haze"></div>
+
+        <div class="txt bottom" id="t1" style="opacity:1;visibility:visible">
+          <div class="k" data-c="eventType"></div>
+          <h1 class="foil" data-c="name"></h1>
+          <svg class="orn" viewBox="0 0 110 12" aria-hidden="true"><path d="M0 6h42M68 6h42" stroke="#b98a3e" stroke-width=".8"/><path d="M55 1l5 5-5 5-5-5z" fill="none" stroke="#b98a3e"/><circle cx="44" cy="6" r="1.2" fill="#b98a3e"/><circle cx="66" cy="6" r="1.2" fill="#b98a3e"/></svg>
+          <div class="hint">Төмен қарай жылжытыңыз <span>↓</span></div>
+        </div>
+        <div class="txt bottom" id="t2"><p class="poem" data-poem="0"></p></div>
+        <div class="txt bottom" id="t3"><p class="poem" data-poem="1"></p></div>
+        <div class="txt bottom" id="t4"><p class="poem" data-poem="2"></p></div>
+        <div class="txt" id="t5">
+          <div class="k">Той салтанаты</div>
+          <div class="d" data-c="day"></div>
+          <div class="m" data-c="monthYear"></div>
+          <div class="w" data-c="weekdayTime"></div>
+        </div>
+        <div class="txt bottom" id="t6">
+          <div class="k">Өтетін орны</div>
+          <div class="venue" data-c="venue"></div>
+          <div class="addr" data-c="address"></div>
+        </div>
+        <div class="txt bottom" id="t7">
+          <div class="venue foil" style="font-size:34px">Сіздерді асыға күтеміз!</div>
+          <div class="hint">Шақыру хатты ашыңыз <span>↓</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="after" id="after">
+    <canvas id="fx"></canvas>
+    <div class="k">Сізге арналған</div>
+    <h3>Шақыру хат</h3>
+
+    <div class="envw" id="envw">
+      <div class="env" id="env">
+        <div class="env-back"></div>
+        <div class="peek"><span class="k">Шақыру</span><b class="foil" data-c="name"></b></div>
+        <div class="env-front"></div>
+        <svg class="env-lines" viewBox="0 0 300 200" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0L150 112L300 0" fill="none" stroke="#c9a15a" stroke-width="1"/><rect x="6" y="6" width="288" height="188" rx="6" fill="none" stroke="#c9a15a" stroke-width=".6" stroke-dasharray="3 4"/></svg>
+        <div class="flap"></div>
+        <button class="seal" id="seal" aria-label="Шақыру хатты ашу">А</button>
+      </div>
+      <div class="tap">Мөрді басып, хатты ашыңыз</div>
+    </div>
+
+    <article class="invite" id="invite">
+      <svg class="corner tl" viewBox="0 0 46 46" aria-hidden="true"><path d="M3 43V14Q3 3 14 3h29M9 37V18q0-9 9-9h19M15 15c6 0 9 3 9 9-5 0-9-3-9-9z" fill="none" stroke="#b98a3e" stroke-width="1"/></svg>
+      <svg class="corner tr" viewBox="0 0 46 46" aria-hidden="true"><path d="M3 43V14Q3 3 14 3h29M9 37V18q0-9 9-9h19M15 15c6 0 9 3 9 9-5 0-9-3-9-9z" fill="none" stroke="#b98a3e" stroke-width="1"/></svg>
+      <svg class="corner bl" viewBox="0 0 46 46" aria-hidden="true"><path d="M3 43V14Q3 3 14 3h29M9 37V18q0-9 9-9h19M15 15c6 0 9 3 9 9-5 0-9-3-9-9z" fill="none" stroke="#b98a3e" stroke-width="1"/></svg>
+      <svg class="corner br" viewBox="0 0 46 46" aria-hidden="true"><path d="M3 43V14Q3 3 14 3h29M9 37V18q0-9 9-9h19M15 15c6 0 9 3 9 9-5 0-9-3-9-9z" fill="none" stroke="#b98a3e" stroke-width="1"/></svg>
+
+      <div class="k r" style="--i:0" data-c="eventType"></div>
+      <div class="nm foil r" style="--i:1" data-c="name"></div>
+      <svg class="orn r" style="--i:2" viewBox="0 0 110 12" aria-hidden="true"><path d="M0 6h42M68 6h42" stroke="#b98a3e" stroke-width=".8"/><path d="M55 1l5 5-5 5-5-5z" fill="none" stroke="#b98a3e"/><circle cx="44" cy="6" r="1.2" fill="#b98a3e"/><circle cx="66" cy="6" r="1.2" fill="#b98a3e"/></svg>
+      <p class="prose r" style="--i:3" data-c="invite"></p>
+      <div class="dateblk r" style="--i:4">
+        <div class="side" data-c="weekday"></div>
+        <div><div class="day foil" data-c="day"></div><div class="mon" data-c="month"></div></div>
+        <div class="side" data-c="time"></div>
+      </div>
+      <div class="yr r" style="--i:5" data-c="year"></div>
+      <div class="place r" style="--i:6"><div class="k">Өтетін орны</div><div class="venue" data-c="venue"></div><div class="addr" data-c="address"></div></div>
+      <div class="cd r" style="--i:7" id="cd" hidden></div>
+      <p class="poem r" style="--i:8" data-poem="3"></p>
+      <div class="hosts r" style="--i:9">Той иелері<b data-c="hosts"></b></div>
+      <div class="btns r" style="--i:10">
+        <a class="btn" id="b-map" target="_blank" rel="noopener" hidden>📍 Карта</a>
+        <button class="btn" id="b-cal" type="button">📅 Күнтізбеге қосу</button>
+      </div>
+    </article>
+
+    <div class="rsvp" id="rsvpBox">
+      <div class="k">Қатысуды растау</div>
+      <h4>Келесіз бе?</h4>
+      <form id="rsvp" novalidate>
+        <label class="f" for="r-name">Атыңыз-жөніңіз</label>
+        <input type="text" id="r-name" name="name" autocomplete="name" required>
+        <label class="f">Жауабыңыз</label>
+        <div class="seg">
+          <label><input type="radio" name="att" value="yes" checked><span>Келемін</span></label>
+          <label><input type="radio" name="att" value="no"><span>Келе алмаймын</span></label>
+        </div>
+        <div id="guestsBox">
+          <label class="f" for="r-guests">Қонақ саны (өзіңізді қоса)</label>
+          <input type="number" id="r-guests" name="guests" min="1" max="10" value="1" inputmode="numeric">
+        </div>
+        <button class="submit" type="submit">Жіберу</button>
+        <div class="demo" id="demoNote" hidden>Демо-режим: жауап әзірге ешкімге жіберілмейді.</div>
+        <div class="msg" id="msg" role="status"></div>
+      </form>
+    </div>
+  </section>
+</div>
+
+<script>
+/* ================== БАПТАУЛАР ================== */
+const CONFIG = {
+  eventType: 'Қыз ұзату тойына шақыру',
+  name:      'Ақтолқын',
+  invite:    'Құрметті ағайын-туыс, құда-жекжат, дос-жарандар! Сіздерді аяулы қызымыз <b>Ақтолқынның</b> ұзату тойына арнайы шақырамыз. Ақ тілектеріңізбен тойымыздың қадірлі қонағы болыңыздар!',
+  dateISO:   '2026-12-04T17:00:00',
+  day: '04', month: 'желтоқсан', year: '2026', weekday: 'жұма', time: '17:00',
+  venue:     '«Ар-Меди» мейрамханасы',
+  address:   'Құдабай Наурызбай, 2',
+  mapUrl:    '',          // нақты 2GIS / Google Maps сілтемесі болса — «Карта» батырмасы шығады
+  hosts:     'Шайдарбек, Шыңғысхан – Анар',
+  rsvp: { whatsapp: '', endpoint: '' },   // мысалы whatsapp: '77001234567'
+  music: ''               // мысалы 'music.mp3' — тек батырма басылғанда ойнайды
+};
+const POEMS = [
+  ['Ақ көгершін — бақыт құсын ұшырдық,','Ақ тілекпен шаттығымызды ұсындық.','Қуанышты бөлісейік бірге деп,','Құрметпенен тойға сізді шақырдық.'],
+  ['Ақтолқын — үйіміздің ақ шуағы,','Әке-шешенің көз нұры, гүл бұтағы.','Ақ жол тілеп ұзатамыз ақ отауға —','Бақытқа толсын өмірінің бұлағы!'],
+  ['Ағайын-туыс, құда-жекжат, дос-жаран,','Сыйластығы жарасқан талай заман!','Ақтолқынның ұзату салтанатына','Шақырамыз шын жүректен, ардақты жан!'],
+  ['Келіңіздер, ақ тілекті арнаңыз,','Қызымызға бақыт, береке қалаңыз.','Ақ көгершін жеткізді бұл хабарды —','Тойымыздың төрінен орын алыңыз!']
+];
+/* =============================================== */
+
+const $=id=>document.getElementById(id);
+const C=Object.assign({},CONFIG,{monthYear:`${CONFIG.month} ${CONFIG.year}`,weekdayTime:`${CONFIG.weekday} · сағат ${CONFIG.time}`});
+document.querySelectorAll('[data-c]').forEach(el=>{ const v=C[el.dataset.c]; if(el.dataset.c==='invite') el.innerHTML=v; else el.textContent=v; });
+document.querySelectorAll('[data-poem]').forEach(el=>{ el.innerHTML=POEMS[+el.dataset.poem].map(l=>`<span class="l">${l}</span>`).join(''); });
+if(/^https?:\/\//.test(CONFIG.mapUrl)){ $('b-map').href=CONFIG.mapUrl; $('b-map').hidden=false; }
+
+/* countdown */
+const target=new Date(CONFIG.dateISO);
+if(!isNaN(target)){ $('cd').hidden=false;
+  const tick=()=>{const d=Math.max(0,target-new Date());
+    $('cd').innerHTML=[[Math.floor(d/864e5),'күн'],[Math.floor(d/36e5)%24,'сағат'],[Math.floor(d/6e4)%60,'минут'],[Math.floor(d/1e3)%60,'секунд']]
+      .map(([v,l])=>`<div><b>${String(v).padStart(2,'0')}</b><i>${l}</i></div>`).join('');};
+  tick(); setInterval(tick,1000); }
+
+/* add to calendar (.ics) */
+$('b-cal').onclick=()=>{
+  const s=CONFIG.dateISO.replace(/[-:]/g,'').slice(0,15), e=new Date(target.getTime()+5*36e5);
+  const pad=n=>String(n).padStart(2,'0'), end=`${e.getFullYear()}${pad(e.getMonth()+1)}${pad(e.getDate())}T${pad(e.getHours())}${pad(e.getMinutes())}00`;
+  const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//toi//kk','BEGIN:VEVENT',`UID:${Date.now()}@toi`,`DTSTART:${s}`,`DTEND:${end}`,
+    `SUMMARY:${CONFIG.name} — қыз ұзату тойы`,`LOCATION:${CONFIG.venue}, ${CONFIG.address}`,'END:VEVENT','END:VCALENDAR'].join('\r\n');
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'})); a.download='toi.ics'; a.click();
+};
+
+/* music — only on tap */
+if(CONFIG.music){ const au=new Audio(CONFIG.music); au.loop=true; const b=$('music'); b.style.display='block'; b.style.opacity=.6;
+  b.onclick=()=>{ if(au.paused){au.play().catch(()=>{});b.style.opacity=1;} else {au.pause();b.style.opacity=.6;} }; }
+
+/* ---------- scroll story ---------- */
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+const seg=(p,a,b)=>clamp((p-a)/(b-a),0,1);
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const easeOut=t=>1-Math.pow(1-t,3);
+const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+const F=.022;
+const SCENES=[
+  {a:0,   b:.14, o:'60% 44%', z:1.06},
+  {a:.14, b:.27, o:'62% 32%', z:1.06},
+  {a:.27, b:.42, o:'50% 56%', z:1.07},
+  {a:.42, b:.57, o:'50% 40%', z:1.08},
+  {a:.57, b:.72, o:'50% 50%', z:1.03},
+  {a:.72, b:.87, o:'52% 38%', z:1.07},
+  {a:.87, b:1,   o:'40% 62%', z:1.03, out:true}
+];
+const imgs=[...$('frame').querySelectorAll('img')];
+imgs.forEach((im,i)=>{ im.style.transformOrigin=SCENES[i].o; im.style.zIndex=i+1; });
+const texts=[1,2,3,4,5,6,7].map(i=>$('t'+i));
+const lines=texts.map(t=>[...t.querySelectorAll('.l')]);
+const haze=$('haze'), story=$('story');
+addEventListener('load',()=>imgs.forEach(im=>im.decode&&im.decode().catch(()=>{})));
+
+function progress(){ const total=story.offsetHeight-innerHeight; return total>0?clamp(-story.getBoundingClientRect().top/total,0,1):0; }
+let last=-1;
+function render(){
+  const p=progress(); if(Math.abs(p-last)<1e-4) return; last=p;
+  const rm=reduced.matches; let hz=0;
+  SCENES.forEach((s,i)=>{
+    let o=i===0?1:(rm?(p>=s.a?1:0):seg(p,s.a,s.a+F));
+    const n=SCENES[i+1]; if(n&&p>=n.a+F) o=0;
+    imgs[i].style.opacity=o.toFixed(3); imgs[i].style.visibility=o>0?'visible':'hidden';
+    const t=seg(p,s.a,s.b), k=rm?0:(s.out?easeOut(t):ease(t));
+    imgs[i].style.transform=`scale(${(1+(s.z-1)*k).toFixed(4)})`;
+    if(i>0&&!rm) hz=Math.max(hz,Math.sin(seg(p,s.a-.004,s.a+F+.004)*Math.PI)*.16);
+    const ts=s.a+F+.006;
+    let to=i===0?1-seg(p,.085,.115):i===6?seg(p,ts,ts+.025):seg(p,ts,ts+.02)*(1-seg(p,s.b-.025,s.b-.004));
+    const el=texts[i]; el.style.opacity=to.toFixed(3); el.style.visibility=to>0?'visible':'hidden';
+    el.style.transform=rm?'none':`translateY(${((1-to)*10).toFixed(1)}px)`;
+    lines[i].forEach((l,j)=>{ const lo=rm?1:seg(p,ts+j*.008,ts+j*.008+.016);
+      l.style.opacity=lo.toFixed(3); l.style.transform=`translateY(${((1-lo)*8).toFixed(1)}px)`; });
+  });
+  haze.style.opacity=hz.toFixed(3);
+}
+let ticking=false;
+function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(()=>{ticking=false;render();}); } }
+addEventListener('scroll',onScroll,{passive:true});
+addEventListener('resize',()=>{last=-1;onScroll();fitFx();});
+addEventListener('orientationchange',()=>{last=-1;setTimeout(()=>{onScroll();fitFx();},250);});
+reduced.addEventListener&&reduced.addEventListener('change',()=>{last=-1;render();});
+render();
+
+/* ---------- envelope + particles (wow) ---------- */
+const fx=$('fx'), ctx=fx.getContext('2d'), after=$('after');
+let W=0,Hh=0,DPR=1, parts=[], fxOn=false;
+function fitFx(){ DPR=Math.min(devicePixelRatio||1,2); W=after.clientWidth; Hh=after.clientHeight; fx.width=W*DPR; fx.height=Hh*DPR; ctx.setTransform(DPR,0,0,DPR,0,0); }
+fitFx();
+const rnd=(a,b)=>a+Math.random()*(b-a);
+function petal(y){ return {k:'p',x:rnd(0,W),y:y??rnd(-40,Hh),vx:rnd(-.25,.25),vy:rnd(.35,.8),r:rnd(5,9),a:rnd(0,6.28),va:rnd(-.02,.02),c:Math.random()<.7?'#f2bcc6':'#fff4f0',life:1e9}; }
+function dust(){ return {k:'d',x:rnd(0,W),y:rnd(0,Hh),vx:rnd(-.1,.1),vy:rnd(-.25,-.05),r:rnd(.8,2),tw:rnd(0,6.28),life:1e9}; }
+for(let i=0;i<26;i++) parts.push(petal()); for(let i=0;i<55;i++) parts.push(dust());
+function burst(x,y,n=150){ for(let i=0;i<n;i++){ const a=rnd(0,6.28), s=rnd(1.5,6.5);
+  parts.push({k:'b',x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-1.5,r:rnd(1.2,3),life:1,c:['#f6dca4','#d9a640','#fff3d6','#e9b8bf'][i%4]}); }
+  for(let i=0;i<24;i++){ const pp=petal(y); pp.x=x+rnd(-30,30); pp.vy=rnd(-3,-1); pp.vx=rnd(-2.5,2.5); parts.push(pp);} }
+function step(){
+  if(!fxOn) return; requestAnimationFrame(step);
+  ctx.clearRect(0,0,W,Hh);
+  parts=parts.filter(q=>q.life>0);
+  for(const q of parts){
+    if(q.k==='p'){ q.x+=q.vx+Math.sin(q.a)*.3; q.y+=q.vy; q.vy=Math.min(q.vy+.03,.8); q.a+=q.va;
+      if(q.y>Hh+20){ q.y=-20; q.x=rnd(0,W); }
+      ctx.save(); ctx.translate(q.x,q.y); ctx.rotate(q.a); ctx.fillStyle=q.c; ctx.globalAlpha=.85;
+      ctx.beginPath(); ctx.ellipse(0,0,q.r,q.r*.55,0,0,6.28); ctx.fill(); ctx.restore(); }
+    else if(q.k==='d'){ q.x+=q.vx; q.y+=q.vy; q.tw+=.05; if(q.y<-5){q.y=Hh+5;q.x=rnd(0,W);}
+      ctx.globalAlpha=.35+.35*Math.sin(q.tw); ctx.fillStyle='#d9a640'; ctx.beginPath(); ctx.arc(q.x,q.y,q.r,0,6.28); ctx.fill(); }
+    else { q.x+=q.vx; q.y+=q.vy; q.vx*=.96; q.vy=q.vy*.96+.06; q.life-=.012;
+      ctx.globalAlpha=Math.max(0,q.life); ctx.fillStyle=q.c; ctx.beginPath(); ctx.arc(q.x,q.y,q.r,0,6.28); ctx.fill(); }
+  }
+  ctx.globalAlpha=1;
+}
+if(!reduced.matches) new IntersectionObserver(es=>{ es.forEach(e=>{ const was=fxOn; fxOn=e.isIntersecting; if(fxOn&&!was){fitFx();step();} }); }).observe(after);
+
+let opened=false;
+function openEnv(){
+  if(opened) return; opened=true;
+  const env=$('env'), r=$('seal').getBoundingClientRect(), ar=after.getBoundingClientRect();
+  env.classList.add('open');
+  if(!reduced.matches) burst(r.left-ar.left+r.width/2, r.top-ar.top+r.height/2);
+  setTimeout(()=>{
+    $('envw').classList.add('gone');
+    const inv=$('invite'); inv.classList.add('on');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{ inv.classList.add('show'); fitFx();
+      if(!reduced.matches){ const ir=inv.getBoundingClientRect(), a2=after.getBoundingClientRect(); burst(ir.left-a2.left+ir.width/2, ir.top-a2.top+90, 120); } }));
+    setTimeout(()=>{ fitFx(); inv.scrollIntoView({behavior:reduced.matches?'auto':'smooth',block:'start'}); },350);
+  }, reduced.matches?50:1700);
+}
+$('seal').addEventListener('click',openEnv);
+
+/* ---------- RSVP ---------- */
+const form=$('rsvp'), msg=$('msg'), gb=$('guestsBox');
+$('demoNote').hidden=!!(CONFIG.rsvp.whatsapp||CONFIG.rsvp.endpoint);
+form.addEventListener('change',()=>{ gb.hidden=form.att.value!=='yes'; });
+const show=t=>{ msg.textContent=t; msg.style.display='block'; };
+form.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const name=form.name.value.trim(); if(!name){ show('Атыңызды жазыңыз.'); form.name.focus(); return; }
+  const yes=form.att.value==='yes', guests=yes?clamp(parseInt(form.guests.value)||1,1,10):0;
+  const text=`${name}: ${yes?`келемін, ${guests} адам`:'келе алмаймын'}`;
+  if(CONFIG.rsvp.whatsapp){ location.href=`https://wa.me/${CONFIG.rsvp.whatsapp}?text=${encodeURIComponent('Шақыруға жауап — '+text)}`; show('WhatsApp ашылды — хабарламаны жіберуді ұмытпаңыз.'); return; }
+  if(CONFIG.rsvp.endpoint){ try{ const r=await fetch(CONFIG.rsvp.endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,attending:yes,guests})}); if(!r.ok) throw 0; show('Рақмет! Жауабыңыз жіберілді.'); form.reset(); gb.hidden=false; }catch{ show('Жіберу сәтсіз аяқталды. Кейінірек қайталап көріңіз.'); } return; }
+  show(`Демо-режим: «${text}». Жауап ұйымдастырушыға жіберілмеді — жіберу тәсілі әлі бапталмаған.`);
+});
+</script>
+</body>
+</html>
