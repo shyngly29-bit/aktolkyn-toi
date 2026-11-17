@@ -124,6 +124,8 @@
     background:rgba(32,27,53,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:var(--gold);display:none;align-items:center;justify-content:center;cursor:pointer;padding:0}
   .fab svg{width:18px;height:18px}
   #auto{left:max(10px, calc(50% - 205px))}
+  #music{right:max(10px, calc(50% - 205px))}
+  #music.off{opacity:.5}
   #auto.pulse{animation:pulse 2s ease-in-out infinite}
 
   @media (prefers-reduced-motion: reduce){
@@ -171,6 +173,7 @@
 <canvas id="c"></canvas>
 <div id="flash"></div>
 <button class="fab" id="auto" aria-label="Автоматты айналдыру"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-pause"/></svg></button>
+<button class="fab" id="music" aria-label="Музыка"><svg fill="none" stroke="currentColor" stroke-width="2"><use href="#i-music"/></svg></button>
 
 <div class="txt bottom" id="t0">
   <div class="k" data-c="eventType"></div>
@@ -245,7 +248,8 @@ const CONFIG = {
   venue:     '«Ар-Меди» мейрамханасы',
   address:   'Құдабай Наурызбай, 2',
   mapUrl:    '',
-  hosts:     'Шайдарбек, Шыңғысхан – Анар'
+  hosts:     'Шайдарбек, Шыңғысхан – Анар',
+  music:     'a/music.mp3'   // Меломен — қыз ұзату
 };
 const POEMS = [
   ['Ақ көгершін — бақыт құсын ұшырдық,','Ақ тілекпен шаттығымызды ұсындық.','Қуанышты бөлісейік бірге деп,','Құрметпенен тойға сізді шақырдық.'],
@@ -552,17 +556,22 @@ function makeFx(cv,host,petals,dust,dark){
       for(let i=0;i<24;i++){ const q=pet(y); q.x=x+rnd(-30,30); q.vy=rnd(-3,-1); q.vx=rnd(-2.5,2.5); ps.push(q); } } };
 }
 
+/* ---------- music: starts on the tap on the seal, toggle with ♪ ---------- */
+const audio=new Audio(); audio.preload='none'; audio.loop=true; audio.volume=.8; audio.src=CONFIG.music;
+$('music').onclick=()=>{ if(audio.paused){ audio.play().catch(()=>{}); $('music').classList.remove('off'); } else { audio.pause(); $('music').classList.add('off'); } };
+
 /* ---------- envelope gate ---------- */
 const gate=$('gate'), gfx=makeFx($('gfx'),gate,16,50,true); gfx.start();
 let opened=false;
 function openEnv(){
   if(opened||$('seal').disabled) return; opened=true;
+  audio.play().catch(()=>$('music').classList.add('off'));
   $('env').classList.add('open'); gfx.burst($('seal'));
   setTimeout(()=>gfx.burst($('env'),10,90), reduced.matches?0:900);
   setTimeout(()=>{
     scrollTo(0,0); document.body.classList.remove('locked'); gate.classList.add('hide'); last=-1; render();
     setTimeout(()=>{ gfx.stop(); gate.style.display='none'; },1300);
-    $('auto').style.display='flex';
+    $('auto').style.display='flex'; $('music').style.display='flex';
     if(!reduced.matches) setTimeout(()=>{ if(!AP.user) play(); else setBtn(); },1200); else setBtn();
   }, reduced.matches?100:2300);
 }
