@@ -557,7 +557,11 @@ function makeFx(cv,host,petals,dust,dark){
 }
 
 /* ---------- music: starts on the tap on the seal, toggle with ♪ ---------- */
-const audio=new Audio(); audio.preload='none'; audio.loop=true; audio.volume=.8; audio.src=CONFIG.music;
+const START=48.5; // песня начинается с 48–49 секунды
+const audio=new Audio(); audio.preload='none'; audio.volume=.8; audio.src=CONFIG.music+'#t='+START;
+const toStart=()=>{ if(audio.currentTime<START-1) audio.currentTime=START; };
+['loadedmetadata','canplay','playing'].forEach(ev=>audio.addEventListener(ev,toStart));
+audio.addEventListener('ended',()=>{ audio.currentTime=START; audio.play().catch(()=>{}); });
 $('music').onclick=()=>{ if(audio.paused){ audio.play().catch(()=>{}); $('music').classList.remove('off'); } else { audio.pause(); $('music').classList.add('off'); } };
 
 /* ---------- envelope gate ---------- */
